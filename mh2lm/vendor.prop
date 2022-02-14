@@ -1,0 +1,6 @@
+#
+# vendor props for lge mh2lm
+#
+
+# LGE Misc
+ro.vendor.lge.swversion=G85030a
