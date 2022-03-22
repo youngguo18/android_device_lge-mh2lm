@@ -15,23 +15,16 @@
 #
 
 # Inherit proprietary blobs
-$(call inherit-product, vendor/lge/sm8150-common/sm8150-common-vendor.mk)
+$(call inherit-product-if-exists, vendor/lge/sm8150-common/sm8150-common-vendor.mk)
 
 COMMON_PATH := device/lge/sm8150-common
 
-# Board
-PRODUCT_USES_QCOM_HARDWARE := true
-PRODUCT_BOARD_PLATFORM := msmnile
+# define hardware platform
+PRODUCT_PLATFORM := msmnile
 
 # Soong
 PRODUCT_SOONG_NAMESPACES += \
     $(COMMON_PATH)/bootctrl
-
-# Enable updating of APEXes
-$(call inherit-product, $(SRC_TARGET_DIR)/product/updatable_apex.mk)
-
-# GSI Keys
-$(call inherit-product, $(SRC_TARGET_DIR)/product/gsi_keys.mk)
 
 # Additional native libraries
 PRODUCT_COPY_FILES += \
@@ -40,20 +33,18 @@ PRODUCT_COPY_FILES += \
 # Overlays
 DEVICE_PACKAGE_OVERLAYS += \
     $(COMMON_PATH)/overlay \
-    $(COMMON_PATH)/overlay-lineage \
-    $(COMMON_PATH)/overlay-system
+    $(COMMON_PATH)/overlay-lineage
 
 PRODUCT_ENFORCE_RRO_TARGETS := *
 PRODUCT_ENFORCE_RRO_EXCLUDED_OVERLAYS += \
-    $(COMMON_PATH)/overlay-lineage/lineage-sdk \
-    $(COMMON_PATH)/overlay-system
+    $(COMMON_PATH)/overlay-lineage/lineage-sdk
 
 # Properties
 TARGET_ODM_PROP += $(COMMON_PATH)/odm.prop
 TARGET_PRODUCT_PROP += $(COMMON_PATH)/product.prop
 TARGET_SYSTEM_PROP += $(COMMON_PATH)/system.prop
-TARGET_VENDOR_PROP += $(COMMON_PATH)/vendor.prop
 TARGET_SYSTEM_EXT_PROP += $(COMMON_PATH)/system_ext.prop
+TARGET_VENDOR_PROP += $(COMMON_PATH)/vendor.prop
 -include frameworks/native/build/phone-xhdpi-6144-dalvik-heap.mk
 
 PRODUCT_COMPATIBLE_PROPERTY_OVERRIDE := true
@@ -64,6 +55,16 @@ PRODUCT_AAPT_PREF_CONFIG := 560dpi
 PRODUCT_AAPT_PREBUILT_DPI := xxxhdpi xxhdpi xhdpi hdpi
 
 # A/B
+AB_OTA_UPDATER := true
+
+AB_OTA_PARTITIONS += \
+    boot \
+    dtbo \
+    product \
+    system \
+    vendor \
+    vbmeta
+
 AB_OTA_POSTINSTALL_CONFIG += \
     RUN_POSTINSTALL_system=true \
     POSTINSTALL_PATH_system=system/bin/otapreopt_script \
@@ -72,10 +73,6 @@ AB_OTA_POSTINSTALL_CONFIG += \
 
 PRODUCT_PACKAGES += \
     otapreopt_script
-
-# ANT+
-PRODUCT_PACKAGES += \
-    com.dsi.ant@1.0.vendor
 
 # Atrace
 PRODUCT_PACKAGES += \
@@ -136,8 +133,8 @@ PRODUCT_COPY_FILES += \
 # Boot control
 PRODUCT_PACKAGES += \
     android.hardware.boot@1.1-impl-qti:64 \
-    android.hardware.boot@1.1-impl-qti.recovery \
     android.hardware.boot@1.1-service \
+    android.hardware.boot@1.1-impl-qti.recovery \
     bootctrl.msmnile \
     bootctrl.msmnile.recovery
 
@@ -146,7 +143,6 @@ PRODUCT_PACKAGES_DEBUG += \
 
 # Bluetooth
 PRODUCT_PACKAGES += \
-    liba2dpoffload \
     libbthost_if \
     vendor.qti.hardware.bluetooth_audio@2.0.vendor \
     vendor.qti.hardware.bluetooth_audio@2.1.vendor \
@@ -205,16 +201,9 @@ PRODUCT_PACKAGES += \
     vendor.qti.hardware.display.mapper@3.0.vendor \
     vendor.qti.hardware.display.mapper@4.0.vendor
 
-# Dex
-PRODUCT_DEX_PREOPT_DEFAULT_COMPILER_FILTER := verify
-
 # DRM
 PRODUCT_PACKAGES += \
     android.hardware.drm@1.3-service.clearkey
-
-# Fingerprint
-PRODUCT_PACKAGES += \
-    android.hardware.biometrics.fingerprint@2.1-service.lge_msmnile
 
 # FM packages
 PRODUCT_PACKAGES += \
@@ -223,10 +212,6 @@ PRODUCT_PACKAGES += \
 	FM2 \
 	qcom.fmradio \
 	qcom.fmradio.xml
-
-# Freeform Multiwindow
-PRODUCT_COPY_FILES += \
-    frameworks/native/data/etc/android.software.freeform_window_management.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.software.freeform_window_management.xml
 
 # GPS
 PRODUCT_COPY_FILES += \
@@ -295,6 +280,10 @@ PRODUCT_COPY_FILES += \
 PRODUCT_PACKAGES += \
     android.hardware.light@2.0-service.lge_msmnile
 
+# LiveDisplay
+PRODUCT_PACKAGES += \
+    vendor.lineage.livedisplay@2.0-service.lge_msmnile
+
 # Media
 PRODUCT_COPY_FILES += \
     $(COMMON_PATH)/media/media_codecs.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs.xml \
@@ -324,19 +313,15 @@ PRODUCT_PACKAGES += \
     NfcNci \
     SecureElement \
     Tag \
-    vendor.nxp.nxpnfc@2.0 \
-    vendor.nxp.nxpese@1.0.vendor:64 \
+	vendor.nxp.nxpese@1.0.vendor:64 \
     vendor.nxp.nxpnfc@1.0.vendor:64
 
 # OMX
 PRODUCT_PACKAGES += \
-    libavservices_minijail \
-    libavservices_minijail.vendor \
     libavservices_minijail_vendor \
     libc2dcolorconvert \
     libcodec2_hidl@1.0.vendor \
     libcodec2_vndk.vendor \
-    libmm-omxcore \
     libOmxAacEnc \
     libOmxAmrEnc \
     libOmxCore \
@@ -346,9 +331,7 @@ PRODUCT_PACKAGES += \
     libOmxVdec \
     libOmxVenc \
     libOmxVidcCommon \
-    libstagefrighthw \
-    libstagefright_softomx.vendor \
-    vendor.qti.hardware.capabilityconfigstore@1.0.vendor
+    libstagefrighthw
 
 # Permission
 PRODUCT_COPY_FILES += \
@@ -419,8 +402,7 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     libjson \
     libqti_vndfwk_detect \
-    libqti_vndfwk_detect.vendor \
-    libvndfwk_detect_jni.qti.vendor
+    libqti_vndfwk_detect.vendor
 
 # RCS
 PRODUCT_PACKAGES += \
@@ -435,9 +417,8 @@ PRODUCT_PACKAGES += \
 
 # RIL
 PRODUCT_PACKAGES += \
-    android.hardware.radio@1.5 \
-    android.hardware.radio.config@1.2 \
-    android.hardware.radio.deprecated@1.0 \
+    android.hardware.radio@1.2 \
+    android.hardware.radio.config@1.0 \
     libprotobuf-cpp-full \
     librmnetctl \
     libxml2
@@ -476,6 +457,13 @@ PRODUCT_BOOT_JARS += \
 PRODUCT_PACKAGES += \
     textclassifier.bundle1
 
+# Touch
+PRODUCT_PACKAGES += \
+    vendor.lineage.touch@1.0-service.lge_msmnile
+
+# Trust HAL
+PRODUCT_PACKAGES += \
+    vendor.lineage.trust@1.0-service
 
 # Update engine
 PRODUCT_PACKAGES += \
@@ -507,20 +495,11 @@ PRODUCT_PACKAGES += \
     android.hardware.wifi@1.0-service \
     hostapd \
     libwpa_client \
-    libwifi-hal \
     libwifi-hal-ctrl \
     libwifi-hal-qcom \
-    libwifi-system-iface \
-    vendor.qti.hardware.wifi.hostapd@1.0.vendor \
-    vendor.qti.hardware.wifi.hostapd@1.1.vendor \
-    vendor.qti.hardware.wifi.hostapd@1.2.vendor \
-    vendor.qti.hardware.wifi.supplicant@2.0.vendor \
-    vendor.qti.hardware.wifi.supplicant@2.1.vendor \
-    vendor.qti.hardware.wifi.supplicant@2.2.vendor \
-    wifi-mac-generator \
     TetheringConfigOverlay.lge_sm8150 \
+    wifi_cli \
     WifiOverlay.lge_sm8150 \
-    wpa_cli \
     wpa_supplicant \
     wpa_supplicant.conf
 
@@ -533,5 +512,4 @@ PRODUCT_COPY_FILES += \
 PRODUCT_PACKAGES += \
     libavservices_minijail \
     libavservices_minijail.vendor \
-    libminijail \
-    libwfdaac_vendor
+    libminijail

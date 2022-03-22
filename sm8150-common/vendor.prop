@@ -25,7 +25,6 @@ persist.vendor.audio.fluence.voicecall=true
 persist.vendor.audio.fluence.voicerec=false
 persist.vendor.audio.ras.enabled=false
 persist.vendor.audio.speaker.prot.enable=false
-persist.vendor.lge.3rd.speaker.prot.enable=on
 ro.qc.sdk.audio.fluencetype=none
 ro.qc.sdk.audio.ssr=false
 ro.vendor.audio.sdk.fluencetype=nxp
@@ -71,20 +70,13 @@ vendor.lge.fm_gain_control_headset=0.7
 vendor.lge.fm_gain_control_speaker=1.0
 
 # Bluetooth
-persist.bluetooth.a2dp_offload.cap=sbc-aac-aptx-aptxhd-ldac
-persist.vendor.bt.a2dp_offload_cap=sbc-aptx-aptxtws-aptxhd-aac-ldac
-persist.vendor.bt.enable.splita2dp=true
-persist.bluetooth.a2dp_offload.disabled=false
 persist.vendor.bt.aac_frm_ctl.enabled=true
-persist.vendor.qcom.bluetooth.a2dp_offload_cap=sbc-aptx-aptxtws-aptxhd-aac-ldac-aptxadaptive
-persist.vendor.qcom.bluetooth.aac_frm_ctl.enabled=true
+persist.vendor.qcom.bluetooth.a2dp_offload_cap=sbc-aptx-aptxhd-aac-ldac
 persist.vendor.qcom.bluetooth.enable.splita2dp=true
-persist.vendor.qcom.bluetooth.twsp_state.enabled=false
-ro.bluetooth.a2dp_offload.supported=true
-persist.vendor.qcom.bluetooth.scram.enabled=true
-ro.vendor.bluetooth.wipower=false
-persist.vendor.qcom.bluetooth.aac_vbr_ctl.enabled=false
 persist.vendor.qcom.bluetooth.soc=cherokee
+persist.vendor.qcom.bluetooth.twsp_state.enabled=false
+ro.vendor.bluetooth.wipower=false
+vendor.qcom.bluetooth.soc=cherokee
 
 # Camera
 ro.vendor.lge.dev.fmode=0
@@ -152,11 +144,9 @@ vendor.gralloc.disable_ubwc=0
 # Keystore
 ro.hardware.keystore_desede=true
 
-# PASR
-vendor.pasr.activemode.enabled=true
-
 # Perf
 ro.vendor.extension_library=libqti-perfd-client.so
+vendor.pasr.activemode.enabled=true
 vendor.power.pasr.enabled=true
 
 # Qualcomm System Daemon
@@ -172,7 +162,7 @@ persist.vendor.radio.procedure_bytes=SKIP
 persist.vendor.radio.rat_on=combine
 persist.vendor.radio.sib16_support=1
 rild.libpath=/vendor/lib64/libril-qc-hal-qmi.so
-ro.telephony.default_network=33,33
+ro.telephony.default_network=26
 ro.telephony.iwlan_operation_mode=AP-assisted
 
 # Sensors

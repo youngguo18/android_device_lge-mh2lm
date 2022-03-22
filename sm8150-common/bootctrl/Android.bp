@@ -28,4 +28,4 @@ cc_library_shared {
     stem: "android.hardware.boot@1.0-impl-1.1-qti",
     defaults: ["android.hardware.boot@1.1-impl-qti_defaults"],
     static_libs: ["libgptutils.lge_msmnile"],
-} 
+}

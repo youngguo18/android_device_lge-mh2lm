@@ -1,6 +1,0 @@
-#
-# vendor props for lge flashlmdd
-#
-
-# LGE Misc
-ro.vendor.lge.swversion=V50030a
